@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Cortex AI Blog — practical guides on AI automation, DevOps, training and enterprise AI strategy."/>
+<meta name="theme-color" content="#000000"/>
+<link rel="manifest" href="manifest.json"/>
+<title>Blog — Cortex AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div id="scrollProgress"></div>
+<div id="cursor"></div><div id="cursorDot"></div>
+<div id="nav-placeholder"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow" data-aos="fade-down">Cortex AI Insights</span>
+    <h1 data-aos="fade-up" data-aos-delay="60">Practical AI Guides<br/><span class="shimmer-text">No Hype, Just Results</span></h1>
+    <p data-aos="fade-up" data-aos-delay="120">Real-world case studies, how-tos, and strategy from the team deploying AI across 60+ businesses.</p>
+  </div>
+</section>
+
+<!-- FEATURED POST -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow" data-aos="fade-up">Featured Post</div>
+    <div style="background:var(--b2);border:1px solid var(--border-h);border-radius:var(--rl);padding:48px;margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center" data-aos="fade-up" data-aos-delay="60">
+      <div>
+        <span class="blog-cat">AI Strategy</span>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px">How We Helped a 200-Person E-Commerce Company Save 120 Hours/Month with AI</h2>
+        <p style="color:var(--t2);font-size:15px;line-height:1.7;margin-bottom:28px">A step-by-step breakdown of how we mapped their workflows, identified the top 3 automation wins, and deployed in 3 weeks without disrupting live operations.</p>
+        <div style="display:flex;align-items:center;gap:16px;font-size:13px;color:var(--t3)">
+          <span>Aviral Uttam</span>
+          <span>·</span>
+          <span>8 min read</span>
+          <span>·</span>
+          <span>May 2025</span>
+        </div>
+      </div>
+      <div style="background:var(--b3);border-radius:var(--r);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:80px">🤖</div>
+    </div>
+  </div>
+</section>
+
+<!-- ALL POSTS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head" data-aos="fade-up">
+      <div class="eyebrow">Latest Articles</div>
+      <h2 class="section-title">From the<br/><span class="shimmer-text">Cortex AI Team</span></h2>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card" data-aos="fade-up">
+        <div class="blog-img">⚡</div>
+        <div class="blog-body">
+          <span class="blog-cat">AI Automation</span>
+          <div class="blog-title">5 Workflows Every Business Should Automate First (With AI)</div>
+          <p class="blog-excerpt">The highest-ROI automations we've deployed across 60+ clients — with implementation time and expected hours saved.</p>
+          <div class="blog-meta"><span>6 min read</span><span>Apr 2025</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-aos="fade-up" data-aos-delay="60">
+        <div class="blog-img">🧠</div>
+        <div class="blog-body">
+          <span class="blog-cat">AI Agents</span>
+          <div class="blog-title">Build vs Buy: When to Use GPT-4o vs Build Your Own Agent</div>
+          <p class="blog-excerpt">A practical framework for deciding when off-the-shelf AI is enough and when you need a custom-built solution.</p>
+          <div class="blog-meta"><span>7 min read</span><span>Apr 2025</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-aos="fade-up" data-aos-delay="120">
+        <div class="blog-img">🐳</div>
+        <div class="blog-body">
+          <span class="blog-cat">DevOps</span>
+          <div class="blog-title">AI-Powered CI/CD: How to Cut Deployment Time by 70%</div>
+          <p class="blog-excerpt">A complete guide to automating your pipeline from commit to production with GitHub Actions, Docker, and AI-assisted testing.</p>
+          <div class="blog-meta"><span>10 min read</span><span>Mar 2025</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-aos="fade-up">
+        <div class="blog-img">📊</div>
+        <div class="blog-body">
+          <span class="blog-cat">Data & Analytics</span>
+          <div class="blog-title">How to Talk to Your SQL Database in Plain English Using AI</div>
+          <p class="blog-excerpt">Step-by-step guide to building a natural-language interface on top of your existing database — no SQL skills required for users.</p>
+          <div class="blog-meta"><span>8 min read</span><span>Mar 2025</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-aos="fade-up" data-aos-delay="60">
+        <div class="blog-img">🎓</div>
+        <div class="blog-body">
+          <span class="blog-cat">AI Training</span>
+          <div class="blog-title">Why Most AI Training Programmes Fail (And What Actually Works)</div>
+          <p class="blog-excerpt">After training 500+ employees, here's what separates the teams that embed AI into daily work from those who forget it in a week.</p>
+          <div class="blog-meta"><span>5 min read</span><span>Feb 2025</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-aos="fade-up" data-aos-delay="120">
+        <div class="blog-img">💰</div>
+        <div class="blog-body">
+          <span class="blog-cat">ROI & Strategy</span>
+          <div class="blog-title">How to Calculate the Real ROI of an AI Automation Project</div>
+          <p class="blog-excerpt">The exact formula we use with every client before starting a project — including the hidden costs most vendors won't tell you about.</p>
+          <div class="blog-meta"><span>6 min read</span><span>Jan 2025</span></div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:40px;font-size:14px;color:var(--t2)" data-aos="fade-up">
+      More posts coming weekly. <a href="#newsletter-cta" style="color:#fff">Subscribe to get them in your inbox →</a>
+    </p>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="cta-strip" id="newsletter-cta">
+  <div class="container cta-inner" data-aos="fade-up">
+    <div>
+      <h2>Get AI insights every week.</h2>
+      <p>Practical tips, case studies, and tools from the Cortex AI team. No spam — unsubscribe anytime.</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <input type="email" id="footerEmail" placeholder="your@email.com" style="padding:13px 16px;background:var(--b3);border:1px solid var(--border);border-radius:10px;color:#fff;font-size:14px;width:260px;outline:none"/>
+      <button id="footerSubBtn" class="btn btn-white">Subscribe →</button>
+    </div>
+    <div id="footerMsg" style="font-size:13px;color:var(--t2);margin-top:8px;width:100%"></div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<button class="float-chat" id="floatChat" aria-label="Chat">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+<div class="chat-popup" id="chatPopup">
+  <div class="chat-head">
+    <div class="chat-head-info"><div class="chat-avatar">C</div><div><strong>Cortex AI Bot</strong><span class="chat-status"><span class="pulse-dot" style="width:6px;height:6px"></span> Online</span></div></div>
+    <button id="chatClose">×</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-input-wrap" id="chatInputWrap" style="display:none">
+    <input type="text" id="chatInput" placeholder="Type here…" maxlength="200"/>
+    <button id="chatSendBtn">→</button>
+  </div>
+</div>
+<script src="_nav.js"></script>
+<script src="script.js"></script>
+<script type="module" src="firebase.js"></script>
+</body>
+</html>

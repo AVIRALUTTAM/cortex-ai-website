@@ -1,130 +1,195 @@
 /* ─── LOADER ─── */
 window.addEventListener('load', () => {
   setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
+    const l = document.getElementById('loader');
+    if (l) l.classList.add('hidden');
   }, 2600);
 });
 
 /* ─── CUSTOM CURSOR ─── */
 const cursor    = document.getElementById('cursor');
 const cursorDot = document.getElementById('cursorDot');
-let mx = 0, my = 0, cx = 0, cy = 0;
-
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursorDot.style.left = mx + 'px';
-  cursorDot.style.top  = my + 'px';
-});
-
-(function animCursor() {
-  cx += (mx - cx) * 0.1;
-  cy += (my - cy) * 0.1;
-  cursor.style.left = cx + 'px';
-  cursor.style.top  = cy + 'px';
-  requestAnimationFrame(animCursor);
-})();
+if (cursor && cursorDot) {
+  let mx = 0, my = 0, cx = 0, cy = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursorDot.style.left = mx + 'px';
+    cursorDot.style.top  = my + 'px';
+  });
+  (function animCursor() {
+    cx += (mx - cx) * 0.1;
+    cy += (my - cy) * 0.1;
+    cursor.style.left = cx + 'px';
+    cursor.style.top  = cy + 'px';
+    requestAnimationFrame(animCursor);
+  })();
+}
 
 /* ─── SCROLL PROGRESS ─── */
 const prog = document.getElementById('scrollProgress');
-window.addEventListener('scroll', () => {
-  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
-  prog.style.width = pct + '%';
-}, { passive: true });
+if (prog) {
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    prog.style.width = pct + '%';
+  }, { passive: true });
+}
 
-/* ─── NAVBAR ─── */
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 40);
-}, { passive: true });
+/* ─── ENTRY POPUP ─── */
+(function initPopup() {
+  const overlay = document.getElementById('entryPopup');
+  if (!overlay) return;
 
-/* ─── MOBILE MENU ─── */
-const menuBtn  = document.getElementById('menuToggle');
-const navLinks = document.getElementById('navLinks');
-menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
-document.querySelectorAll('.nav-links a').forEach(a =>
-  a.addEventListener('click', () => navLinks.classList.remove('open'))
-);
+  const SEEN_KEY = 'cortex_popup_seen';
+  if (localStorage.getItem(SEEN_KEY)) return;
 
-/* ─── HERO CANVAS — mesh network ─── */
-(function heroCanvas() {
-  const canvas = document.getElementById('heroCanvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H, pts;
-  const NUM = 80, LINK_DIST = 140;
-
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
+  function showPopup() {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
 
-  function mkPt() {
-    return {
-      x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4,
-      r: Math.random() * 1.5 + .5,
-    };
+  function hidePopup() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    localStorage.setItem(SEEN_KEY, '1');
   }
 
-  function init() { resize(); pts = Array.from({ length: NUM }, mkPt); }
+  setTimeout(showPopup, 3000);
 
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    for (let i = 0; i < pts.length; i++) {
-      const a = pts[i];
-      a.x += a.vx; a.y += a.vy;
-      if (a.x < 0 || a.x > W) a.vx *= -1;
-      if (a.y < 0 || a.y > H) a.vy *= -1;
-      ctx.beginPath();
-      ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.35)';
-      ctx.fill();
-      for (let j = i + 1; j < pts.length; j++) {
-        const b   = pts[j];
-        const dx  = a.x - b.x, dy = a.y - b.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < LINK_DIST) {
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / LINK_DIST) * 0.12})`;
-          ctx.lineWidth = .5;
-          ctx.stroke();
-        }
-      }
+  document.getElementById('popupClose').addEventListener('click', hidePopup);
+  overlay.addEventListener('click', e => { if (e.target === overlay) hidePopup(); });
+
+  document.getElementById('popupForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const name     = document.getElementById('pName').value.trim();
+    const email    = document.getElementById('pEmail').value.trim();
+    const phone    = document.getElementById('pPhone').value.trim();
+    const industry = document.getElementById('pIndustry').value;
+
+    if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !phone) {
+      if (!name)  document.getElementById('pName').style.borderColor  = 'rgba(255,80,80,.5)';
+      if (!email) document.getElementById('pEmail').style.borderColor = 'rgba(255,80,80,.5)';
+      if (!phone) document.getElementById('pPhone').style.borderColor = 'rgba(255,80,80,.5)';
+      return;
     }
-    requestAnimationFrame(draw);
+
+    const btn = document.getElementById('popupSubmit');
+    btn.textContent = 'Sending…';
+    btn.disabled    = true;
+
+    /* window.savePopupLead is set by firebase.js */
+    if (typeof window.savePopupLead === 'function') {
+      await window.savePopupLead({ name, email, phone, industry, page: location.href });
+    }
+
+    document.getElementById('popupSuccess').classList.add('show');
+    setTimeout(hidePopup, 2200);
+  });
+})();
+
+/* ─── THREE.JS HERO ─── */
+(function initThree() {
+  const canvas = document.getElementById('threeCanvas');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(canvas.offsetWidth || window.innerWidth, canvas.offsetHeight || window.innerHeight);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, (canvas.offsetWidth || window.innerWidth) / (canvas.offsetHeight || window.innerHeight), 0.1, 1000);
+  camera.position.z = 40;
+
+  /* floating wireframe shapes */
+  const geos = [
+    new THREE.IcosahedronGeometry(3, 0),
+    new THREE.OctahedronGeometry(2.5, 0),
+    new THREE.TetrahedronGeometry(2.8, 0),
+    new THREE.IcosahedronGeometry(1.6, 0),
+  ];
+  const wireMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.12 });
+
+  const meshes = [];
+  for (let i = 0; i < 18; i++) {
+    const geo  = geos[i % geos.length];
+    const mesh = new THREE.Mesh(geo, wireMat.clone());
+    mesh.position.set((Math.random() - .5) * 90, (Math.random() - .5) * 60, (Math.random() - .5) * 50);
+    mesh.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
+    mesh.userData.rx = (Math.random() - .5) * 0.007;
+    mesh.userData.ry = (Math.random() - .5) * 0.009;
+    mesh.userData.vy = (Math.random() - .5) * 0.02;
+    mesh.userData.phase = Math.random() * Math.PI * 2;
+    meshes.push(mesh);
+    scene.add(mesh);
   }
 
-  init(); draw();
-  window.addEventListener('resize', () => { resize(); pts = Array.from({ length: NUM }, mkPt); });
+  /* star particles */
+  const pGeo = new THREE.BufferGeometry();
+  const pos  = new Float32Array(400 * 3);
+  for (let i = 0; i < pos.length; i++) pos[i] = (Math.random() - .5) * 120;
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const pMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.18, transparent: true, opacity: 0.35 });
+  scene.add(new THREE.Points(pGeo, pMat));
+
+  /* mouse parallax */
+  let targetX = 0, targetY = 0, curX = 0, curY = 0;
+  document.addEventListener('mousemove', e => {
+    targetX = (e.clientX / window.innerWidth  - .5) * 6;
+    targetY = (e.clientY / window.innerHeight - .5) * -4;
+  });
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.01;
+    curX += (targetX - curX) * 0.04;
+    curY += (targetY - curY) * 0.04;
+    camera.position.x = curX;
+    camera.position.y = curY;
+
+    meshes.forEach(m => {
+      m.rotation.x += m.userData.rx;
+      m.rotation.y += m.userData.ry;
+      m.position.y += Math.sin(t + m.userData.phase) * 0.008;
+    });
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    const w = window.innerWidth, h = window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
 })();
 
 /* ─── TYPEWRITER ─── */
 (function typewriter() {
-  const el    = document.getElementById('typewriter');
-  const words = ['Real Revenue', 'Smarter Teams', 'Faster Workflows', 'Your Competitive Edge'];
+  const el = document.getElementById('typewriter');
+  if (!el) return;
+  const words   = ['Real Revenue', 'Smarter Teams', 'Faster Workflows', 'Your Competitive Edge'];
   let wi = 0, ci = 0, deleting = false;
-  const speed = { type: 80, delete: 40, pause: 2200 };
-
+  const S = { type: 80, del: 40, pause: 2200 };
   function tick() {
-    const word = words[wi];
+    const w = words[wi];
     if (!deleting) {
-      el.textContent = word.slice(0, ++ci);
-      if (ci === word.length) { deleting = true; return setTimeout(tick, speed.pause); }
+      el.textContent = w.slice(0, ++ci);
+      if (ci === w.length) { deleting = true; return setTimeout(tick, S.pause); }
     } else {
-      el.textContent = word.slice(0, --ci);
+      el.textContent = w.slice(0, --ci);
       if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
     }
-    setTimeout(tick, deleting ? speed.delete : speed.type);
+    setTimeout(tick, deleting ? S.del : S.type);
   }
   tick();
 })();
 
-/* ─── AOS — scroll reveal ─── */
+/* ─── AOS ─── */
 (function initAOS() {
   const els = document.querySelectorAll('[data-aos]');
   els.forEach(el => {
-    const delay = parseFloat(el.dataset.aosDelay || 0);
-    el.style.transitionDelay = delay + 'ms';
+    const d = parseFloat(el.dataset.aosDelay || 0);
+    el.style.transitionDelay = d + 'ms';
   });
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -137,39 +202,32 @@ document.querySelectorAll('.nav-links a').forEach(a =>
   els.forEach(el => obs.observe(el));
 })();
 
-/* ─── COUNTER ANIMATION ─── */
+/* ─── COUNTER ─── */
 function animCount(el, target) {
   const dur = 1600, start = performance.now();
   const run = now => {
-    const t = Math.min((now - start) / dur, 1);
+    const t    = Math.min((now - start) / dur, 1);
     const ease = 1 - Math.pow(1 - t, 4);
     el.textContent = Math.floor(target * ease);
-    if (t < 1) requestAnimationFrame(run);
-    else el.textContent = target;
+    if (t < 1) requestAnimationFrame(run); else el.textContent = target;
   };
   requestAnimationFrame(run);
 }
-
 const counterObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (!e.isIntersecting) return;
-    const el  = e.target;
-    const val = parseInt(el.dataset.count, 10);
-    animCount(el, val);
-    counterObs.unobserve(el);
+    animCount(e.target, parseInt(e.target.dataset.count, 10));
+    counterObs.unobserve(e.target);
   });
 }, { threshold: .5 });
-
 document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
 
 /* ─── METRIC BARS ─── */
 const barObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (!e.isIntersecting) return;
-    const bar = e.target;
-    const pct = Math.min(parseInt(bar.dataset.pct, 10), 100);
-    bar.style.width = pct + '%';
-    barObs.unobserve(bar);
+    e.target.style.width = Math.min(parseInt(e.target.dataset.pct || 0, 10), 100) + '%';
+    barObs.unobserve(e.target);
   });
 }, { threshold: .3 });
 document.querySelectorAll('.metric-bar').forEach(b => barObs.observe(b));
@@ -177,59 +235,48 @@ document.querySelectorAll('.metric-bar').forEach(b => barObs.observe(b));
 /* ─── CARD TILT ─── */
 document.querySelectorAll('.tilt-card').forEach(card => {
   card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    const x    = (e.clientX - rect.left) / rect.width;
-    const y    = (e.clientY - rect.top)  / rect.height;
-    const rx   = (y - .5) * 10;
-    const ry   = (x - .5) * -10;
-    card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(8px)`;
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width;
+    const y = (e.clientY - r.top)  / r.height;
+    card.style.transform = `perspective(700px) rotateX(${(y - .5) * 10}deg) rotateY(${(x - .5) * -10}deg) translateZ(8px)`;
     card.style.setProperty('--mx', (x * 100) + '%');
     card.style.setProperty('--my', (y * 100) + '%');
   });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
 });
 
 /* ─── TESTIMONIAL SLIDER ─── */
 (function testiSlider() {
-  const track  = document.getElementById('testiTrack');
-  const dotsEl = document.getElementById('testiDots');
-  const cards  = track.querySelectorAll('.testi-card');
-  const total  = cards.length;
-  let   cur    = 0, perView = 3, autoTimer;
-
-  function getPerView() {
-    return window.innerWidth <= 968 ? 1 : 3;
-  }
-
+  const track = document.getElementById('testiTrack');
+  const dots  = document.getElementById('testiDots');
+  if (!track || !dots) return;
+  const cards = track.querySelectorAll('.testi-card');
+  let cur = 0, perView = 3, timer;
+  function pv() { return window.innerWidth <= 968 ? 1 : 3; }
   function render() {
-    perView = getPerView();
+    perView = pv();
     const w = (track.parentElement.offsetWidth + 20) / perView;
     track.style.transform = `translateX(-${cur * w}px)`;
-    dotsEl.innerHTML = '';
-    const pages = total - perView + 1;
-    for (let i = 0; i < pages; i++) {
+    dots.innerHTML = '';
+    for (let i = 0; i < cards.length - perView + 1; i++) {
       const d = document.createElement('div');
       d.className = 'testi-dot' + (i === cur ? ' active' : '');
-      d.addEventListener('click', () => { cur = i; render(); resetAuto(); });
-      dotsEl.appendChild(d);
+      d.addEventListener('click', () => { cur = i; render(); reset(); });
+      dots.appendChild(d);
     }
   }
-
-  function next() { cur = Math.min(cur + 1, total - perView); render(); }
+  function next() { cur = Math.min(cur + 1, cards.length - perView); render(); }
   function prev() { cur = Math.max(cur - 1, 0); render(); }
-
-  function resetAuto() { clearInterval(autoTimer); autoTimer = setInterval(next, 4000); }
-
-  document.getElementById('testiBtnNext').addEventListener('click', () => { next(); resetAuto(); });
-  document.getElementById('testiBtnPrev').addEventListener('click', () => { prev(); resetAuto(); });
-
-  render(); resetAuto();
+  function reset() { clearInterval(timer); timer = setInterval(next, 4000); }
+  const nb = document.getElementById('testiBtnNext');
+  const pb = document.getElementById('testiBtnPrev');
+  if (nb) nb.addEventListener('click', () => { next(); reset(); });
+  if (pb) pb.addEventListener('click', () => { prev(); reset(); });
+  render(); reset();
   window.addEventListener('resize', render);
 })();
 
-/* ─── FAQ ACCORDION ─── */
+/* ─── FAQ ─── */
 document.querySelectorAll('.faq-q').forEach(btn => {
   btn.addEventListener('click', () => {
     const item   = btn.parentElement;
@@ -240,92 +287,50 @@ document.querySelectorAll('.faq-q').forEach(btn => {
 });
 
 /* ─── ROI CALCULATOR ─── */
-const roiEmp  = document.getElementById('roiEmp');
-const roiHrs  = document.getElementById('roiHrs');
-const roiHrsV = document.getElementById('roiHrsVal');
-const roiRate = document.getElementById('roiRate');
-const roiHSav = document.getElementById('roiHrsSaved');
-const roiMon  = document.getElementById('roiMon');
-const roiAnn  = document.getElementById('roiAnn');
+(function initROI() {
+  const roiEmp  = document.getElementById('roiEmp');
+  const roiHrs  = document.getElementById('roiHrs');
+  const roiHrsV = document.getElementById('roiHrsVal');
+  const roiRate = document.getElementById('roiRate');
+  if (!roiEmp) return;
+  function fmtINR(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+  function calcROI() {
+    const emp = parseFloat(roiEmp.value) || 0;
+    const hrs = parseFloat(roiHrs.value) || 0;
+    const rate = parseFloat(roiRate.value) || 0;
+    if (roiHrsV) roiHrsV.textContent = hrs;
+    const mon = emp * hrs * 0.7 * 4.33;
+    const mSav = mon * rate;
+    const hs = document.getElementById('roiHrsSaved');
+    const rm = document.getElementById('roiMon');
+    const ra = document.getElementById('roiAnn');
+    if (hs) hs.textContent = Math.round(mon).toLocaleString('en-IN') + ' hrs';
+    if (rm) rm.textContent = fmtINR(mSav);
+    if (ra) ra.textContent = fmtINR(mSav * 12);
+  }
+  [roiEmp, roiHrs, roiRate].forEach(el => el && el.addEventListener('input', calcROI));
+  calcROI();
+})();
 
-function fmtINR(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
-
-function calcROI() {
-  const emp  = parseFloat(roiEmp.value)  || 0;
-  const hrs  = parseFloat(roiHrs.value)  || 0;
-  const rate = parseFloat(roiRate.value) || 0;
-  roiHrsV.textContent = hrs;
-  const mon  = emp * hrs * 0.7 * 4.33;
-  const mSav = mon * rate;
-  roiHSav.textContent = Math.round(mon).toLocaleString('en-IN') + ' hrs';
-  roiMon.textContent  = fmtINR(mSav);
-  roiAnn.textContent  = fmtINR(mSav * 12);
-}
-[roiEmp, roiHrs, roiRate].forEach(el => el && el.addEventListener('input', calcROI));
-calcROI();
-
-/* ─── SMOOTH SCROLL ─── */
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const t = document.querySelector(a.getAttribute('href'));
-    if (t) { e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth' }); }
-  });
-});
-
-/* ─── CHAT WIDGET ─── */
-const floatChat = document.getElementById('floatChat');
-const chatPopup = document.getElementById('chatPopup');
-const chatClose = document.getElementById('chatClose');
-const chatBody  = document.getElementById('chatBody');
-
-floatChat.addEventListener('click', () => chatPopup.classList.toggle('open'));
-chatClose.addEventListener('click',  () => chatPopup.classList.remove('open'));
-
-document.querySelectorAll('.chat-opt').forEach(btn => {
-  btn.addEventListener('click', () => {
-    addChatMsg(btn.dataset.msg, 'user');
-    document.querySelector('.chat-opts')?.remove();
-    setTimeout(() => {
-      const r = {
-        'Book a consultation':       "Great choice! Please scroll to our contact form and we'll schedule a 30-min call within 24 hours.",
-        'Tell me about pricing':     "Our plans start at ₹15,000 for startups. Check the pricing section, or tell us your team size for a custom quote.",
-        'What services do you offer?': "We offer AI Automation, Agents, Analytics, Chatbots, Custom AI Dev, and Strategy Consulting. Which area interests you most?",
-      };
-      addChatMsg(r[btn.dataset.msg] || "Happy to help! Scroll down to our contact form for a free consultation.", 'bot');
-    }, 600);
-  });
-});
-
-function addChatMsg(text, type) {
-  const el = document.createElement('div');
-  el.className = 'chat-msg ' + type;
-  el.textContent = text;
-  chatBody.appendChild(el);
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-/* ─── FOOTER YEAR ─── */
-document.getElementById('year').textContent = new Date().getFullYear();
-
-/* ─── CONTACT FORM VALIDATION (Firebase submit in firebase.js) ─── */
+/* ─── CONTACT FORM VALIDATION ─── */
 function validateForm() {
   let ok = true;
-  const fields = [
-    { id: 'fname',      errId: 'err-name',      msg: 'Name is required' },
-    { id: 'femail',     errId: 'err-email',      msg: 'Valid email required' },
-    { id: 'fchallenge', errId: 'err-challenge',  msg: 'Please describe your challenge' },
-  ];
-  fields.forEach(({ id, errId, msg }) => {
+  [
+    { id: 'fname',      errId: 'err-name',     check: v => v.length > 0 },
+    { id: 'femail',     errId: 'err-email',    check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+    { id: 'fchallenge', errId: 'err-challenge', check: v => v.length > 0 },
+  ].forEach(({ id, errId, check }) => {
     const el  = document.getElementById(id);
     const err = document.getElementById(errId);
+    if (!el) return;
     const val = el.value.trim();
-    if (!val || (id === 'femail' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val))) {
+    if (!check(val)) {
       el.classList.add('error');
-      err.textContent = msg;
+      if (err) err.textContent = id === 'femail' ? 'Valid email required' : 'This field is required';
       ok = false;
     } else {
       el.classList.remove('error');
-      err.textContent = '';
+      if (err) err.textContent = '';
     }
   });
   return ok;
@@ -334,7 +339,158 @@ function validateForm() {
 window.submitContact = async function(e) {
   e.preventDefault();
   if (!validateForm()) return;
-  // Actual submission handled in firebase.js
 };
 
-document.getElementById('contactForm').addEventListener('submit', window.submitContact);
+const contactForm = document.getElementById('contactForm');
+if (contactForm) contactForm.addEventListener('submit', window.submitContact);
+
+/* ─── SMOOTH SCROLL ─── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) {
+      e.preventDefault();
+      window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth' });
+    }
+  });
+});
+
+/* ─── CHATBOT (conversational) ─── */
+(function initChatbot() {
+  const floatBtn  = document.getElementById('floatChat');
+  const popup     = document.getElementById('chatPopup');
+  const closeBtn  = document.getElementById('chatClose');
+  const body      = document.getElementById('chatBody');
+  const inputWrap = document.getElementById('chatInputWrap');
+  const input     = document.getElementById('chatInput');
+  const sendBtn   = document.getElementById('chatSendBtn');
+  if (!floatBtn || !popup) return;
+
+  floatBtn.addEventListener('click', () => {
+    popup.classList.toggle('open');
+    if (popup.classList.contains('open') && !body.hasChildNodes()) startChat();
+  });
+  closeBtn.addEventListener('click', () => popup.classList.remove('open'));
+
+  /* conversation state */
+  const state = { step: 0, biz: '', challenge: '', name: '', email: '', phone: '' };
+
+  const flow = [
+    { key: 'biz',       q: "Hi! 👋 I'm the Cortex AI assistant. What does your business do?",  input: true },
+    { key: 'challenge', q: "Great! What's your biggest challenge right now?",                   opts: ['AI Automation', 'Lead Generation', 'Data & Analytics', 'DevOps / Cloud', 'AI Training for Staff', 'Something else'] },
+    { key: 'name',      q: "Got it! What's your name?",                                         input: true },
+    { key: 'email',     q: "Nice to meet you, [name]! What's your work email?",                 input: true },
+    { key: 'phone',     q: "Almost done! What's your WhatsApp or phone number?",                input: true },
+  ];
+
+  function addMsg(text, type) {
+    const el = document.createElement('div');
+    el.className = 'chat-msg ' + type;
+    el.textContent = text;
+    body.appendChild(el);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function botTyping(text, delay, cb) {
+    const el = document.createElement('div');
+    el.className = 'chat-msg bot';
+    el.textContent = '…';
+    body.appendChild(el);
+    body.scrollTop = body.scrollHeight;
+    setTimeout(() => {
+      el.textContent = text;
+      body.scrollTop = body.scrollHeight;
+      if (cb) cb();
+    }, delay);
+  }
+
+  function showStep(idx) {
+    if (idx >= flow.length) { finish(); return; }
+    const step = flow[idx];
+    let q = step.q.replace('[name]', state.name);
+
+    if (step.opts) {
+      botTyping(q, 400, () => {
+        const opts = document.createElement('div');
+        opts.className = 'chat-opts';
+        step.opts.forEach(o => {
+          const btn = document.createElement('button');
+          btn.className = 'chat-opt';
+          btn.textContent = o;
+          btn.addEventListener('click', () => {
+            state[step.key] = o;
+            addMsg(o, 'user');
+            opts.remove();
+            state.step++;
+            setTimeout(() => showStep(state.step), 300);
+          });
+          opts.appendChild(btn);
+        });
+        body.appendChild(opts);
+        body.scrollTop = body.scrollHeight;
+      });
+    } else {
+      botTyping(q, 400, () => {
+        if (inputWrap) inputWrap.style.display = 'flex';
+        if (input) { input.focus(); input.placeholder = step.key === 'email' ? 'your@email.com' : step.key === 'phone' ? '+91 ...' : 'Type here…'; }
+      });
+    }
+  }
+
+  function handleInput() {
+    const val = input.value.trim();
+    if (!val) return;
+    const step = flow[state.step];
+    if (step && step.input) {
+      /* basic email validation */
+      if (step.key === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+        addMsg('Please enter a valid email address.', 'bot'); return;
+      }
+      state[step.key] = val;
+      addMsg(val, 'user');
+      input.value = '';
+      if (inputWrap) inputWrap.style.display = 'none';
+      state.step++;
+      setTimeout(() => showStep(state.step), 300);
+    }
+  }
+
+  if (sendBtn) sendBtn.addEventListener('click', handleInput);
+  if (input)   input.addEventListener('keydown', e => { if (e.key === 'Enter') handleInput(); });
+
+  function finish() {
+    if (inputWrap) inputWrap.style.display = 'none';
+    botTyping(`Thanks ${state.name}! 🎉 We'll reach out to ${state.email} within 24 hours with a personalised AI plan for your business.`, 500);
+    /* save via firebase.js hook */
+    if (typeof window.saveChatbotLead === 'function') {
+      window.saveChatbotLead({ ...state, page: location.href });
+    }
+  }
+
+  function startChat() {
+    state.step = 0;
+    showStep(0);
+  }
+})();
+
+/* ─── PWA INSTALL ─── */
+(function initPWA() {
+  let deferredPrompt;
+  const btn = document.getElementById('pwaInstall');
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (btn) btn.style.display = 'block';
+  });
+  if (btn) btn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') btn.style.display = 'none';
+    deferredPrompt = null;
+  });
+  /* register service worker */
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+})();

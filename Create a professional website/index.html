@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Cortex AI — Enterprise AI consulting. Automation, AI agents, custom solutions that drive measurable business growth."/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Cortex AI — Enterprise AI consulting, automation, DevOps and employee AI training. Turn AI into competitive advantage."/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data:; img-src 'self' https: data:; font-src 'self' https://fonts.gstatic.com; frame-src 'none';"/>
+<meta name="theme-color" content="#000000"/>
+<link rel="manifest" href="manifest.json"/>
 <title>Cortex AI — Where Intelligence Meets Innovation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -12,267 +15,193 @@
 </head>
 <body>
 
+<!-- ENTRY POPUP -->
+<div id="entryPopup" class="popup-overlay" role="dialog" aria-label="Get your free AI audit">
+  <div class="popup-card">
+    <button class="popup-close" id="popupClose" aria-label="Close">×</button>
+    <div class="popup-badge">🎁 Free AI Audit — Limited Spots</div>
+    <h2>Discover How Much You're Leaving on the Table</h2>
+    <p>We'll analyse your workflows and show you exactly where AI can save you time and money — free, no strings.</p>
+    <form id="popupForm" novalidate>
+      <div class="pf-row"><input type="text"  id="pName"  placeholder="Your full name *" required/></div>
+      <div class="pf-row"><input type="email" id="pEmail" placeholder="Work email *" required/></div>
+      <div class="pf-row"><input type="tel"   id="pPhone" placeholder="WhatsApp / Phone number *" required/></div>
+      <div class="pf-row"><select id="pIndustry">
+        <option value="">Select your industry</option>
+        <option>Healthcare</option><option>E-commerce</option><option>SaaS / Startup</option>
+        <option>Logistics</option><option>FinTech</option><option>Manufacturing</option><option>Education</option><option>Other</option>
+      </select></div>
+      <button type="submit" class="btn btn-white btn-block" id="popupSubmit">Claim My Free AI Audit →</button>
+      <p class="popup-note">No spam. No credit card. We'll email you within 24 hours.</p>
+      <div class="popup-success" id="popupSuccess">✓ Got it! Check your inbox within 24 hours.</div>
+    </form>
+  </div>
+</div>
+
 <!-- LOADER -->
 <div id="loader">
   <div class="loader-inner">
-    <svg class="loader-logo-svg" viewBox="0 0 60 60" fill="none">
+    <svg viewBox="0 0 60 60" fill="none" width="60" height="60">
       <circle cx="30" cy="30" r="28" stroke="white" stroke-width="1.5" stroke-dasharray="176" stroke-dashoffset="176" class="loader-ring"/>
       <path d="M18 30 L26 22 L34 30 L42 22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="50" stroke-dashoffset="50" class="loader-path"/>
-      <circle cx="30" cy="38" r="3" fill="white" class="loader-dot"/>
+      <circle cx="30" cy="38" r="3" fill="white" class="loader-dot" style="opacity:0"/>
     </svg>
-    <div class="loader-text">Cortex<span>AI</span></div>
+    <div class="loader-name">Cortex<span>AI</span></div>
     <div class="loader-bar"><div class="loader-fill"></div></div>
   </div>
 </div>
 
 <!-- SCROLL PROGRESS -->
 <div id="scrollProgress"></div>
-
 <!-- CURSOR -->
-<div id="cursor"></div>
-<div id="cursorDot"></div>
+<div id="cursor"></div><div id="cursorDot"></div>
 
-<!-- NAVBAR -->
-<header id="navbar">
-  <div class="container nav-inner">
-    <a href="#home" class="logo">
-      <div class="logo-mark">
-        <svg viewBox="0 0 32 32" fill="none">
-          <circle cx="16" cy="16" r="14" stroke="white" stroke-width="1.5"/>
-          <path d="M8 16 L13 11 L18 16 L23 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="16" cy="21" r="2.5" fill="white"/>
-        </svg>
-      </div>
-      <span class="logo-text">Cortex<span class="logo-dim">AI</span></span>
-    </a>
-    <nav class="nav-links" id="navLinks">
-      <a href="#services">Services</a>
-      <a href="#process">Process</a>
-      <a href="#case-studies">Results</a>
-      <a href="#industries">Industries</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#about">About</a>
-      <a href="#contact" class="btn-nav">Book a Call</a>
-    </nav>
-    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
+<!-- NAV PLACEHOLDER -->
+<div id="nav-placeholder"></div>
 
 <!-- HERO -->
 <section id="home" class="hero">
-  <canvas id="heroCanvas"></canvas>
-  <div class="hero-noise"></div>
+  <canvas id="threeCanvas"></canvas>
+  <div class="hero-grid-overlay"></div>
   <div class="container hero-inner">
     <div class="hero-badge" data-aos="fade-down">
       <span class="pulse-dot"></span>
-      <span>Now serving 60+ enterprise clients globally</span>
+      <span>Trusted by 60+ businesses globally · AI Consulting · DevOps · Training</span>
     </div>
     <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
-      AI That Builds<br/>
-      <span class="typewriter-wrap">
-        <span id="typewriter"></span><span class="cursor-blink">|</span>
-      </span>
+      We Build AI That<br/>
+      <span class="typewriter-wrap"><span id="typewriter"></span><span class="cursor-blink">|</span></span>
     </h1>
     <p class="hero-sub" data-aos="fade-up" data-aos-delay="200">
-      We turn complex AI into competitive advantage — from intelligent automation to custom models that move your bottom line.
+      Automation, intelligent agents, DevOps pipelines, and employee AI training — everything your business needs to run smarter.
     </p>
     <div class="hero-ctas" data-aos="fade-up" data-aos-delay="300">
-      <a href="#contact" class="btn btn-white">
+      <a href="contact.html" class="btn btn-white">
         Book Free Consultation
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
-      <a href="#case-studies" class="btn btn-outline">See Our Results</a>
+      <a href="services.html" class="btn btn-outline">Explore Services</a>
     </div>
     <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
       <div class="hstat"><span class="hstat-n" data-count="60">0</span><span class="hstat-s">+</span><p>Enterprise Clients</p></div>
       <div class="hstat-div"></div>
-      <div class="hstat"><span class="hstat-n" data-count="200">0</span><span class="hstat-s">+</span><p>AI Workflows Deployed</p></div>
+      <div class="hstat"><span class="hstat-n" data-count="200">0</span><span class="hstat-s">+</span><p>AI Deployments</p></div>
       <div class="hstat-div"></div>
       <div class="hstat"><span class="hstat-n" data-count="98">0</span><span class="hstat-s">%</span><p>Client Retention</p></div>
       <div class="hstat-div"></div>
-      <div class="hstat"><span class="hstat-n" data-count="5">0</span><span class="hstat-s">×</span><p>Avg. ROI Delivered</p></div>
+      <div class="hstat"><span class="hstat-n" data-count="500">0</span><span class="hstat-s">+</span><p>Employees Trained</p></div>
     </div>
   </div>
-  <div class="hero-scroll-hint" data-aos="fade-up" data-aos-delay="600">
-    <span>Scroll to explore</span>
-    <div class="scroll-arrow"></div>
-  </div>
+  <div class="hero-scroll-hint"><span>Scroll</span><div class="scroll-arrow"></div></div>
 </section>
 
-<!-- TRUST STRIP -->
+<!-- TRUST -->
 <section class="trust-section">
   <div class="container">
     <p class="trust-label">Trusted by teams at</p>
     <div class="trust-track-wrap">
       <div class="trust-track">
-        <div class="trust-logo">Infosys</div>
-        <div class="trust-logo">Accenture</div>
-        <div class="trust-logo">TCS</div>
-        <div class="trust-logo">Wipro</div>
-        <div class="trust-logo">HCL</div>
-        <div class="trust-logo">Cognizant</div>
-        <div class="trust-logo">HDFC</div>
-        <div class="trust-logo">Flipkart</div>
-        <div class="trust-logo">Infosys</div>
-        <div class="trust-logo">Accenture</div>
-        <div class="trust-logo">TCS</div>
-        <div class="trust-logo">Wipro</div>
-        <div class="trust-logo">HCL</div>
-        <div class="trust-logo">Cognizant</div>
-        <div class="trust-logo">HDFC</div>
-        <div class="trust-logo">Flipkart</div>
+        <span class="trust-logo">Infosys</span><span class="trust-logo">Accenture</span>
+        <span class="trust-logo">TCS</span><span class="trust-logo">Wipro</span>
+        <span class="trust-logo">HCL</span><span class="trust-logo">Cognizant</span>
+        <span class="trust-logo">HDFC Bank</span><span class="trust-logo">Flipkart</span>
+        <span class="trust-logo">Infosys</span><span class="trust-logo">Accenture</span>
+        <span class="trust-logo">TCS</span><span class="trust-logo">Wipro</span>
+        <span class="trust-logo">HCL</span><span class="trust-logo">Cognizant</span>
+        <span class="trust-logo">HDFC Bank</span><span class="trust-logo">Flipkart</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SERVICES -->
-<section id="services" class="section">
+<!-- SERVICES OVERVIEW -->
+<section class="section" id="services-overview">
   <div class="container">
     <div class="section-head" data-aos="fade-up">
-      <div class="eyebrow">What We Build</div>
-      <h2 class="section-title">End-to-End AI Services<br/><span class="shimmer-text">That Move Numbers</span></h2>
-      <p class="section-sub">From strategy to production — we architect, build and optimise AI systems that deliver real business outcomes.</p>
+      <div class="eyebrow">What We Do</div>
+      <h2 class="section-title">One Firm. Every AI Need<br/><span class="shimmer-text">Your Business Has.</span></h2>
+      <p class="section-sub">From first automation to full enterprise transformation — we cover every layer of your AI journey.</p>
     </div>
-    <div class="services-grid">
-      <div class="svc-card tilt-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="svc-num">01</div>
-        <div class="svc-icon"><svg viewBox="0 0 40 40" fill="none"><path d="M8 20h6l4-8 6 16 4-12 4 4h6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>AI Automation</h3>
-        <p>Eliminate repetitive workflows. We map, model and automate processes saving hundreds of engineer-hours every month.</p>
-        <div class="svc-tags"><span>n8n</span><span>Zapier</span><span>Make</span></div>
-        <div class="svc-arrow">→</div>
+    <div class="services-home-grid">
+      <a href="services.html#automation" class="svc-home-card tilt-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="shc-num">01</div>
+        <div class="shc-title">AI Automation</div>
+        <p>Eliminate bottlenecks. Automate workflows. Save hundreds of hours.</p>
+        <span class="shc-link">Learn more →</span>
         <div class="tilt-highlight"></div>
-      </div>
-      <div class="svc-card tilt-card" data-aos="fade-up" data-aos-delay="60">
-        <div class="svc-num">02</div>
-        <div class="svc-icon"><svg viewBox="0 0 40 40" fill="none"><rect x="6" y="12" width="28" height="20" rx="3" stroke="white" stroke-width="1.8"/><path d="M14 22h12M14 27h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M20 12V8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <h3>AI Agents</h3>
-        <p>Custom intelligent agents for support, sales and operations — working 24/7 with no human bottleneck.</p>
-        <div class="svc-tags"><span>LangChain</span><span>Claude</span><span>GPT-4</span></div>
-        <div class="svc-arrow">→</div>
+      </a>
+      <a href="services.html#agents" class="svc-home-card tilt-card" data-aos="fade-up" data-aos-delay="60">
+        <div class="shc-num">02</div>
+        <div class="shc-title">AI Agents</div>
+        <p>Custom intelligent agents for support, sales and operations — 24/7.</p>
+        <span class="shc-link">Learn more →</span>
         <div class="tilt-highlight"></div>
-      </div>
-      <div class="svc-card tilt-card" data-aos="fade-up" data-aos-delay="120">
-        <div class="svc-num">03</div>
-        <div class="svc-icon"><svg viewBox="0 0 40 40" fill="none"><path d="M8 30 L16 18 L22 24 L28 12 L34 20" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="18" r="2" fill="white"/><circle cx="28" cy="12" r="2" fill="white"/></svg></div>
-        <h3>Data Analytics</h3>
-        <p>Turn raw data into predictive intelligence. Real-time dashboards, forecasting models and automated reporting.</p>
-        <div class="svc-tags"><span>BigQuery</span><span>Tableau</span><span>Python</span></div>
-        <div class="svc-arrow">→</div>
+      </a>
+      <a href="services.html#devops" class="svc-home-card tilt-card" data-aos="fade-up" data-aos-delay="120">
+        <div class="shc-num">03</div>
+        <div class="shc-title">DevOps & Cloud</div>
+        <p>CI/CD pipelines, infrastructure as code, Docker, Kubernetes — fully automated.</p>
+        <span class="shc-link">Learn more →</span>
         <div class="tilt-highlight"></div>
-      </div>
-      <div class="svc-card tilt-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="svc-num">04</div>
-        <div class="svc-icon"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="12" stroke="white" stroke-width="1.8"/><path d="M15 20 Q20 14 25 20 Q20 26 15 20" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <h3>AI Chatbots</h3>
-        <p>Deploy intelligent chatbots on WhatsApp, Web, and Slack — generating leads and resolving queries around the clock.</p>
-        <div class="svc-tags"><span>WhatsApp API</span><span>Dialogflow</span></div>
-        <div class="svc-arrow">→</div>
+      </a>
+      <a href="ai-training.html" class="svc-home-card tilt-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="shc-num">04</div>
+        <div class="shc-title">AI Workplace Training</div>
+        <p>Train your entire team — new hires and veterans — on AI tools that 10× their productivity.</p>
+        <span class="shc-link">Learn more →</span>
         <div class="tilt-highlight"></div>
-      </div>
-      <div class="svc-card tilt-card" data-aos="fade-up" data-aos-delay="60">
-        <div class="svc-num">05</div>
-        <div class="svc-icon"><svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="10" height="10" rx="2" stroke="white" stroke-width="1.8"/><rect x="22" y="8" width="10" height="10" rx="2" stroke="white" stroke-width="1.8"/><rect x="8" y="22" width="10" height="10" rx="2" stroke="white" stroke-width="1.8"/><rect x="22" y="22" width="10" height="10" rx="2" stroke="white" stroke-width="1.8"/></svg></div>
-        <h3>Custom AI Development</h3>
-        <p>Fine-tuned models, RAG pipelines and production-grade AI systems built specifically for your data and domain.</p>
-        <div class="svc-tags"><span>PyTorch</span><span>OpenAI</span><span>Pinecone</span></div>
-        <div class="svc-arrow">→</div>
+      </a>
+      <a href="services.html#analytics" class="svc-home-card tilt-card" data-aos="fade-up" data-aos-delay="60">
+        <div class="shc-num">05</div>
+        <div class="shc-title">Data & Analytics</div>
+        <p>Turn SQL, Excel and raw data into real-time predictive dashboards.</p>
+        <span class="shc-link">Learn more →</span>
         <div class="tilt-highlight"></div>
-      </div>
-      <div class="svc-card tilt-card" data-aos="fade-up" data-aos-delay="120">
-        <div class="svc-num">06</div>
-        <div class="svc-icon"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="12" r="5" stroke="white" stroke-width="1.8"/><path d="M10 32 C10 25 30 25 30 32" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M28 18 L34 12 M28 18 L22 18" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <h3>AI Strategy Consulting</h3>
-        <p>Board-level AI roadmaps. We identify high-ROI automation opportunities and deliver a phased implementation plan.</p>
-        <div class="svc-tags"><span>Roadmap</span><span>Audit</span><span>ROI Analysis</span></div>
-        <div class="svc-arrow">→</div>
+      </a>
+      <a href="services.html#custom" class="svc-home-card tilt-card" data-aos="fade-up" data-aos-delay="120">
+        <div class="shc-num">06</div>
+        <div class="shc-title">Custom AI Development</div>
+        <p>Fine-tuned models, RAG pipelines, and production-ready AI apps built for your domain.</p>
+        <span class="shc-link">Learn more →</span>
         <div class="tilt-highlight"></div>
-      </div>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a href="services.html" class="btn btn-outline">View All Services →</a>
     </div>
   </div>
 </section>
 
-<!-- METRICS BAND -->
-<section class="metrics-band">
-  <div class="container metrics-grid">
-    <div class="metric-item" data-aos="fade-up">
-      <div class="metric-bar-wrap"><div class="metric-bar" data-pct="80"></div></div>
-      <div class="metric-num"><span class="count-num" data-count="80">0</span>%</div>
-      <div class="metric-label">Avg. reduction in manual work</div>
-    </div>
-    <div class="metric-item" data-aos="fade-up" data-aos-delay="80">
-      <div class="metric-bar-wrap"><div class="metric-bar" data-pct="65"></div></div>
-      <div class="metric-num"><span class="count-num" data-count="65">0</span>%</div>
-      <div class="metric-label">Avg. operational cost saving</div>
-    </div>
-    <div class="metric-item" data-aos="fade-up" data-aos-delay="160">
-      <div class="metric-bar-wrap"><div class="metric-bar" data-pct="300"></div></div>
-      <div class="metric-num"><span class="count-num" data-count="3">0</span>×</div>
-      <div class="metric-label">Average lead volume increase</div>
-    </div>
-    <div class="metric-item" data-aos="fade-up" data-aos-delay="240">
-      <div class="metric-bar-wrap"><div class="metric-bar" data-pct="95"></div></div>
-      <div class="metric-num"><span class="count-num" data-count="15">0</span>+ hrs</div>
-      <div class="metric-label">Saved per week per department</div>
-    </div>
-  </div>
-</section>
-
-<!-- PROCESS -->
-<section id="process" class="section section-alt">
+<!-- 3D FEATURE BAND -->
+<section class="feature-band">
   <div class="container">
-    <div class="section-head" data-aos="fade-up">
-      <div class="eyebrow">How We Work</div>
-      <h2 class="section-title">From Discovery to<br/><span class="shimmer-text">Deployed in Weeks</span></h2>
-    </div>
-    <div class="process-wrap">
-      <div class="process-line"></div>
-      <div class="process-steps">
-        <div class="proc-step" data-aos="fade-up" data-aos-delay="0">
-          <div class="proc-num">01</div>
-          <div class="proc-body">
-            <h3>Discovery Call</h3>
-            <p>We learn your business, map your workflows, and identify where AI delivers the highest ROI.</p>
-          </div>
-        </div>
-        <div class="proc-step" data-aos="fade-up" data-aos-delay="80">
-          <div class="proc-num">02</div>
-          <div class="proc-body">
-            <h3>AI Audit</h3>
-            <p>Deep-dive analysis of your existing stack, data quality, and automation opportunity map.</p>
-          </div>
-        </div>
-        <div class="proc-step" data-aos="fade-up" data-aos-delay="160">
-          <div class="proc-num">03</div>
-          <div class="proc-body">
-            <h3>Solution Design</h3>
-            <p>A custom roadmap with milestones, KPIs, architecture decisions and investment breakdown.</p>
-          </div>
-        </div>
-        <div class="proc-step" data-aos="fade-up" data-aos-delay="240">
-          <div class="proc-num">04</div>
-          <div class="proc-body">
-            <h3>Build & Integrate</h3>
-            <p>Our engineers deploy AI into your existing systems — minimal disruption, maximum output.</p>
-          </div>
-        </div>
-        <div class="proc-step" data-aos="fade-up" data-aos-delay="320">
-          <div class="proc-num">05</div>
-          <div class="proc-body">
-            <h3>Monitor & Scale</h3>
-            <p>Ongoing performance tracking, model refinement and proactive scaling as your needs grow.</p>
-          </div>
-        </div>
+    <div class="fb-grid">
+      <div class="fb-item" data-aos="fade-up">
+        <div class="fb-icon-3d">⚡</div>
+        <h3>Speed</h3>
+        <p>From discovery to deployed AI in under 4 weeks.</p>
+      </div>
+      <div class="fb-item" data-aos="fade-up" data-aos-delay="80">
+        <div class="fb-icon-3d">🔒</div>
+        <h3>Security</h3>
+        <p>Enterprise-grade security, NDA-first, encrypted pipelines.</p>
+      </div>
+      <div class="fb-item" data-aos="fade-up" data-aos-delay="160">
+        <div class="fb-icon-3d">📊</div>
+        <h3>Measurable ROI</h3>
+        <p>Every deployment has a KPI dashboard. No AI theatre.</p>
+      </div>
+      <div class="fb-item" data-aos="fade-up" data-aos-delay="240">
+        <div class="fb-icon-3d">🌐</div>
+        <h3>Full Stack</h3>
+        <p>AI + DevOps + Training + Analytics under one roof.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CASE STUDIES -->
-<section id="case-studies" class="section">
+<!-- CASE STUDIES TEASER -->
+<section class="section section-alt">
   <div class="container">
     <div class="section-head" data-aos="fade-up">
       <div class="eyebrow">Proven Results</div>
@@ -280,67 +209,47 @@
     </div>
     <div class="cases-grid">
       <div class="case-card" data-aos="fade-up">
-        <div class="case-eyebrow">E-Commerce · Customer Support</div>
+        <div class="case-eyebrow">E-Commerce · Support</div>
         <div class="case-big"><span class="count-num" data-count="80">0</span>%</div>
         <div class="case-metric-label">Faster response time</div>
-        <h3>AI Support Agent Deployment</h3>
-        <p>Built a multi-channel AI support agent handling 70% of tickets instantly — freeing the human team for complex escalations.</p>
-        <div class="case-tags"><span>AI Agent</span><span>NLP</span><span>Zendesk API</span></div>
+        <h3>AI Support Agent</h3>
+        <p>70% of tickets resolved instantly. Human team freed for strategy.</p>
+        <a href="case-studies.html" class="card-link">Full case study →</a>
       </div>
       <div class="case-card case-featured" data-aos="fade-up" data-aos-delay="80">
         <div class="case-eyebrow">SaaS · Growth</div>
         <div class="case-big"><span class="count-num" data-count="3">0</span>×</div>
-        <div class="case-metric-label">Qualified lead increase</div>
-        <h3>Outbound AI Lead Engine</h3>
-        <p>An autonomous outbound agent that prospected, personalised and booked calls — running 24/7 without a sales team.</p>
-        <div class="case-tags"><span>AI Outbound</span><span>CRM Sync</span><span>GPT-4</span></div>
+        <div class="case-metric-label">Lead volume tripled</div>
+        <h3>Outbound AI Engine</h3>
+        <p>Autonomous prospecting running 24/7. CAC dropped 40%.</p>
+        <a href="case-studies.html" class="card-link">Full case study →</a>
       </div>
       <div class="case-card" data-aos="fade-up" data-aos-delay="160">
-        <div class="case-eyebrow">Logistics · Analytics</div>
+        <div class="case-eyebrow">Logistics · DevOps</div>
         <div class="case-big"><span class="count-num" data-count="15">0</span>h+</div>
         <div class="case-metric-label">Saved per week</div>
-        <h3>Predictive Analytics Dashboard</h3>
-        <p>Replaced 3 manual reporting workflows with a real-time AI dashboard forecasting demand and flagging supply issues.</p>
-        <div class="case-tags"><span>BigQuery</span><span>Python</span><span>Looker</span></div>
+        <h3>CI/CD + Analytics</h3>
+        <p>Automated deployment pipeline + forecasting dashboard. Zero manual reporting.</p>
+        <a href="case-studies.html" class="card-link">Full case study →</a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="section section-alt" id="testimonials">
+<section class="section">
   <div class="container">
     <div class="section-head" data-aos="fade-up">
       <div class="eyebrow">Client Voices</div>
-      <h2 class="section-title">Straight from the<br/><span class="shimmer-text">Decision Makers</span></h2>
+      <h2 class="section-title">What Decision-Makers<br/><span class="shimmer-text">Actually Say</span></h2>
     </div>
     <div class="testi-wrap">
       <div class="testi-track" id="testiTrack">
-        <div class="testi-card">
-          <div class="testi-stars">★★★★★</div>
-          <p>"Cortex AI transformed our customer ops in 6 weeks. The AI agent handles 70% of tickets and the team finally focuses on strategy."</p>
-          <div class="testi-author"><div class="testi-avatar">RS</div><div><strong>Rahul Sharma</strong><span>VP Operations, RetailX</span></div></div>
-        </div>
-        <div class="testi-card">
-          <div class="testi-stars">★★★★★</div>
-          <p>"The ROI was visible in the first month. Our lead volume tripled and CAC dropped by 40%. Exceptional team, no hand-holding required."</p>
-          <div class="testi-author"><div class="testi-avatar">PA</div><div><strong>Priya Agarwal</strong><span>CEO, GrowthStack SaaS</span></div></div>
-        </div>
-        <div class="testi-card">
-          <div class="testi-stars">★★★★★</div>
-          <p>"Most AI vendors overpromise. Cortex AI under-promised and over-delivered. Our forecasting accuracy went from 65% to 94%."</p>
-          <div class="testi-author"><div class="testi-avatar">MK</div><div><strong>Meera Krishnan</strong><span>Head of Analytics, LogiCore</span></div></div>
-        </div>
-        <div class="testi-card">
-          <div class="testi-stars">★★★★★</div>
-          <p>"From strategy to deployment in under 4 weeks. The team deeply understood our domain and built something we couldn't have imagined."</p>
-          <div class="testi-author"><div class="testi-avatar">AV</div><div><strong>Arjun Verma</strong><span>CTO, HealthBridge</span></div></div>
-        </div>
-        <div class="testi-card">
-          <div class="testi-stars">★★★★★</div>
-          <p>"Saved us 20 hours of manual reporting weekly. The predictive dashboard catches supply issues 3 days before they'd normally surface."</p>
-          <div class="testi-author"><div class="testi-avatar">SD</div><div><strong>Sneha Desai</strong><span>Director, ProcureNow</span></div></div>
-        </div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p>"Cortex AI transformed our ops in 6 weeks. The AI agent handles 70% of tickets. Team now focuses on strategy."</p><div class="testi-author"><div class="testi-avatar">RS</div><div><strong>Rahul Sharma</strong><span>VP Operations, RetailX</span></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p>"ROI was visible in the first month. Lead volume tripled, CAC dropped 40%. Exceptional team."</p><div class="testi-author"><div class="testi-avatar">PA</div><div><strong>Priya Agarwal</strong><span>CEO, GrowthStack</span></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p>"Forecasting accuracy went from 65% to 94%. Most AI vendors overpromise — Cortex AI over-delivered."</p><div class="testi-author"><div class="testi-avatar">MK</div><div><strong>Meera Krishnan</strong><span>Head of Analytics, LogiCore</span></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p>"The DevOps automation alone saved us 20h/week. The AI training programme got our whole team using AI in day 1."</p><div class="testi-author"><div class="testi-avatar">AV</div><div><strong>Arjun Verma</strong><span>CTO, HealthBridge</span></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p>"From strategy to deployment in under 4 weeks. Team understood our domain deeply and built something remarkable."</p><div class="testi-author"><div class="testi-avatar">SD</div><div><strong>Sneha Desai</strong><span>Director, ProcureNow</span></div></div></div>
       </div>
       <div class="testi-controls">
         <button class="testi-btn" id="testiBtnPrev">←</button>
@@ -351,354 +260,44 @@
   </div>
 </section>
 
-<!-- INDUSTRIES -->
-<section id="industries" class="section">
-  <div class="container">
-    <div class="section-head" data-aos="fade-up">
-      <div class="eyebrow">Domain Expertise</div>
-      <h2 class="section-title">Industries We<br/><span class="shimmer-text">Transform</span></h2>
-    </div>
-    <div class="ind-grid">
-      <div class="ind-card" data-aos="zoom-in" data-aos-delay="0"><div class="ind-icon">🏥</div><div class="ind-name">Healthcare</div></div>
-      <div class="ind-card" data-aos="zoom-in" data-aos-delay="50"><div class="ind-icon">🛒</div><div class="ind-name">E-commerce</div></div>
-      <div class="ind-card" data-aos="zoom-in" data-aos-delay="100"><div class="ind-icon">🏘️</div><div class="ind-name">Real Estate</div></div>
-      <div class="ind-card" data-aos="zoom-in" data-aos-delay="150"><div class="ind-icon">🎓</div><div class="ind-name">Education</div></div>
-      <div class="ind-card" data-aos="zoom-in" data-aos-delay="200"><div class="ind-icon">🚚</div><div class="ind-name">Logistics</div></div>
-      <div class="ind-card" data-aos="zoom-in" data-aos-delay="250"><div class="ind-icon">🏭</div><div class="ind-name">Manufacturing</div></div>
-      <div class="ind-card" data-aos="zoom-in" data-aos-delay="300"><div class="ind-icon">💳</div><div class="ind-name">FinTech</div></div>
-      <div class="ind-card" data-aos="zoom-in" data-aos-delay="350"><div class="ind-icon">🚀</div><div class="ind-name">Startups</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- TECH STACK -->
-<section class="section section-alt">
-  <div class="container">
-    <div class="section-head" data-aos="fade-up">
-      <div class="eyebrow">Our Arsenal</div>
-      <h2 class="section-title">Built on the<br/><span class="shimmer-text">Best-in-Class Stack</span></h2>
-    </div>
-    <div class="tech-grid">
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="0">OpenAI GPT-4o</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="40">Anthropic Claude</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="80">LangChain</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="120">Pinecone</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="160">n8n</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="200">Firebase</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="240">Python / FastAPI</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="280">Next.js</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="320">PostgreSQL</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="360">Supabase</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="400">HubSpot</div>
-      <div class="tech-item" data-aos="fade-up" data-aos-delay="440">Zapier / Make</div>
-    </div>
-  </div>
-</section>
-
-<!-- ROI CALCULATOR -->
-<section class="section roi-section" id="roi">
-  <div class="container">
-    <div class="roi-wrap">
-      <div class="roi-left" data-aos="fade-right">
-        <div class="eyebrow">AI ROI Calculator</div>
-        <h2 class="section-title">How Much Could<br/><span class="shimmer-text">You Be Saving?</span></h2>
-        <p class="section-sub">Instant estimate — no email required. Based on real benchmarks from 60+ client deployments.</p>
-        <ul class="roi-checks">
-          <li>✓ Calculated from real client data</li>
-          <li>✓ Conservative 70% automation rate</li>
-          <li>✓ Includes implementation amortisation</li>
-        </ul>
-      </div>
-      <div class="roi-right" data-aos="fade-left">
-        <div class="roi-card">
-          <h3>Calculate Your Savings</h3>
-          <div class="roi-field">
-            <label>Employees doing repetitive tasks</label>
-            <input type="number" id="roiEmp" value="5" min="1"/>
-          </div>
-          <div class="roi-field">
-            <label>Hours/week per employee on repetitive work — <strong id="roiHrsVal">15</strong>h</label>
-            <input type="range" id="roiHrs" min="1" max="40" value="15"/>
-          </div>
-          <div class="roi-field">
-            <label>Average hourly cost (₹)</label>
-            <input type="number" id="roiRate" value="500" min="50"/>
-          </div>
-          <div class="roi-results">
-            <div class="roi-row"><span>Hours saved / month</span><strong id="roiHrsSaved">—</strong></div>
-            <div class="roi-row"><span>Savings / month</span><strong id="roiMon">—</strong></div>
-            <div class="roi-row roi-row-big"><span>Annual savings</span><strong id="roiAnn">—</strong></div>
-          </div>
-          <a href="#contact" class="btn btn-white btn-block">Claim These Savings →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing" class="section section-alt">
-  <div class="container">
-    <div class="section-head" data-aos="fade-up">
-      <div class="eyebrow">Pricing</div>
-      <h2 class="section-title">Transparent Plans,<br/><span class="shimmer-text">Real Outcomes</span></h2>
-      <p class="section-sub">No lock-in. No hidden fees. Just measurable ROI.</p>
-    </div>
-    <div class="price-grid">
-      <div class="price-card" data-aos="fade-up">
-        <div class="price-tier">Starter</div>
-        <div class="price-val">₹15,000<span>+</span></div>
-        <div class="price-sub">Perfect for first AI deployment</div>
-        <ul>
-          <li>✓ AI Audit & Strategy</li>
-          <li>✓ 1 Workflow Automated</li>
-          <li>✓ 2 Weeks Support</li>
-          <li>✓ Documentation Handoff</li>
-          <li class="muted">✗ Custom AI Model</li>
-          <li class="muted">✗ Dedicated Manager</li>
-        </ul>
-        <a href="#contact" class="btn btn-outline btn-block">Get Started</a>
-      </div>
-      <div class="price-card price-featured" data-aos="fade-up" data-aos-delay="80">
-        <div class="price-pop">Most Popular</div>
-        <div class="price-tier">Growth</div>
-        <div class="price-val">₹50,000<span>+</span></div>
-        <div class="price-sub">For teams scaling with AI</div>
-        <ul>
-          <li>✓ Everything in Starter</li>
-          <li>✓ Custom AI Agent</li>
-          <li>✓ CRM / Tool Integration</li>
-          <li>✓ Monthly Maintenance</li>
-          <li>✓ Analytics Dashboard</li>
-          <li class="muted">✗ Dedicated Team</li>
-        </ul>
-        <a href="#contact" class="btn btn-white btn-block">Get Started</a>
-      </div>
-      <div class="price-card" data-aos="fade-up" data-aos-delay="160">
-        <div class="price-tier">Enterprise</div>
-        <div class="price-val">Custom</div>
-        <div class="price-sub">Full AI transformation</div>
-        <ul>
-          <li>✓ Everything in Growth</li>
-          <li>✓ Custom Model Training</li>
-          <li>✓ Dedicated AI Team</li>
-          <li>✓ SLA-backed Support</li>
-          <li>✓ Ongoing Consulting</li>
-          <li>✓ White-glove Onboarding</li>
-        </ul>
-        <a href="#contact" class="btn btn-outline btn-block">Contact Sales</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" class="section">
-  <div class="container about-wrap">
-    <div class="about-left" data-aos="fade-right">
-      <div class="eyebrow">About Cortex AI</div>
-      <h2 class="section-title">We Engineer<br/><span class="shimmer-text">Intelligence</span></h2>
-      <p class="about-lead">We're a team of AI engineers, data scientists and growth strategists who've seen too many "AI projects" fail to deliver.</p>
-      <p class="about-body">So we built a consulting practice around one rule: no AI system ships until we can show you exactly how it moves your bottom line. We work with 60+ companies across healthcare, logistics, SaaS and retail — deploying AI that actually sticks.</p>
-      <div class="about-stats">
-        <div><span class="count-num" data-count="60">0</span>+<p>Clients</p></div>
-        <div><span class="count-num" data-count="4">0</span>+<p>Years</p></div>
-        <div><span class="count-num" data-count="200">0</span>+<p>Deployments</p></div>
-      </div>
-    </div>
-    <div class="about-right" data-aos="fade-left">
-      <div class="about-visual">
-        <div class="av-ring av-ring-1"></div>
-        <div class="av-ring av-ring-2"></div>
-        <div class="av-ring av-ring-3"></div>
-        <div class="av-core">
-          <svg viewBox="0 0 60 60" fill="none" width="40" height="40">
-            <circle cx="30" cy="30" r="28" stroke="white" stroke-width="1.5"/>
-            <path d="M18 30 L26 22 L34 30 L42 22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="30" cy="38" r="3" fill="white"/>
-          </svg>
-        </div>
-        <div class="av-dot ad1"></div>
-        <div class="av-dot ad2"></div>
-        <div class="av-dot ad3"></div>
-        <div class="av-dot ad4"></div>
-        <div class="av-dot ad5"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section section-alt">
-  <div class="container faq-container">
-    <div class="section-head" data-aos="fade-up">
-      <div class="eyebrow">FAQ</div>
-      <h2 class="section-title">Common<br/><span class="shimmer-text">Questions</span></h2>
-    </div>
-    <div class="faq-list">
-      <div class="faq-item" data-aos="fade-up"><button class="faq-q">How quickly can you deliver an AI solution? <span class="faq-icon">+</span></button><div class="faq-a"><p>Simple automations deploy in 1–2 weeks. Custom AI agents take 3–4 weeks. Enterprise transformations run 6–12 weeks. We always identify a quick win in the first sprint.</p></div></div>
-      <div class="faq-item" data-aos="fade-up" data-aos-delay="40"><button class="faq-q">Do I need technical knowledge to work with you? <span class="faq-icon">+</span></button><div class="faq-a"><p>None required. We translate every technical decision into business language. You approve outcomes, not architecture diagrams.</p></div></div>
-      <div class="faq-item" data-aos="fade-up" data-aos-delay="80"><button class="faq-q">What if AI isn't right for my business? <span class="faq-icon">+</span></button><div class="faq-a"><p>We'll tell you upfront during the AI Audit. If we can't find clear ROI opportunities — no project, no charge. We'd rather walk away than overpromise.</p></div></div>
-      <div class="faq-item" data-aos="fade-up" data-aos-delay="120"><button class="faq-q">What tools and platforms do you integrate with? <span class="faq-icon">+</span></button><div class="faq-a"><p>Any modern SaaS tool with an API: HubSpot, Salesforce, Slack, WhatsApp, Zoho, Notion, Google Workspace, Shopify, and custom stacks.</p></div></div>
-      <div class="faq-item" data-aos="fade-up" data-aos-delay="160"><button class="faq-q">Is my business data safe with you? <span class="faq-icon">+</span></button><div class="faq-a"><p>Yes. We sign NDAs before any discovery call, use encrypted data pipelines, and can deploy fully on-premise for sensitive environments.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="section contact-section">
-  <div class="container">
-    <div class="contact-wrap">
-      <div class="contact-left" data-aos="fade-right">
-        <div class="eyebrow">Get In Touch</div>
-        <h2 class="section-title">Book Your Free<br/><span class="shimmer-text">AI Consultation</span></h2>
-        <p class="section-sub">Tell us about your business. We'll respond within 24 hours with a tailored AI roadmap.</p>
-        <div class="contact-bullets">
-          <div class="cb"><div class="cb-num">30 min</div><div><strong>Strategy Call</strong><span>Understand your biggest bottleneck</span></div></div>
-          <div class="cb"><div class="cb-num">24 h</div><div><strong>Custom Roadmap</strong><span>Tailored AI recommendations</span></div></div>
-          <div class="cb"><div class="cb-num">Free</div><div><strong>No Obligation</strong><span>Transparent pricing, no surprises</span></div></div>
-        </div>
-        <div class="contact-info">
-          <div>✉ hello@cortexai.in</div>
-          <div>📞 +91 98765 43210</div>
-          <div>💬 WhatsApp: +91 98765 43210</div>
-        </div>
-      </div>
-      <div class="contact-right" data-aos="fade-left">
-        <form class="contact-form" id="contactForm" novalidate>
-          <h3>Free AI Consultation</h3>
-          <div class="form-row">
-            <label>Full Name *</label>
-            <input type="text" name="name" id="fname" placeholder="John Doe" required/>
-            <span class="field-err" id="err-name"></span>
-          </div>
-          <div class="form-row">
-            <label>Work Email *</label>
-            <input type="email" name="email" id="femail" placeholder="john@company.com" required/>
-            <span class="field-err" id="err-email"></span>
-          </div>
-          <div class="form-row">
-            <label>Company Name</label>
-            <input type="text" name="company" id="fcompany" placeholder="Acme Inc."/>
-          </div>
-          <div class="form-row">
-            <label>Industry</label>
-            <select name="industry" id="findustry">
-              <option value="">Select Industry</option>
-              <option>Healthcare</option><option>E-commerce</option><option>Real Estate</option>
-              <option>Education</option><option>Logistics</option><option>Manufacturing</option>
-              <option>SaaS / Startup</option><option>FinTech</option><option>Other</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label>Your Biggest Challenge *</label>
-            <textarea name="challenge" id="fchallenge" rows="4" placeholder="What's slowing your business down right now?" required></textarea>
-            <span class="field-err" id="err-challenge"></span>
-          </div>
-          <div class="form-row newsletter-row">
-            <label class="checkbox-label">
-              <input type="checkbox" id="fNewsletter" checked/>
-              <span>Subscribe to our weekly AI insights newsletter</span>
-            </label>
-          </div>
-          <button type="submit" class="btn btn-white btn-block" id="submitBtn">
-            <span id="submitText">Schedule a Call →</span>
-            <span id="submitSpinner" class="spinner" style="display:none"></span>
-          </button>
-          <p class="form-note">We reply within 24 hours. No spam, ever.</p>
-          <div class="form-success" id="formSuccess">✓ Received! We'll be in touch within 24 hours.</div>
-          <div class="form-error-msg" id="formError"></div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA STRIP -->
+<!-- CTA -->
 <section class="cta-strip">
   <div class="container cta-inner" data-aos="fade-up">
-    <div>
-      <h2>Ready to build your AI advantage?</h2>
-      <p>Join 60+ companies already growing with Cortex AI.</p>
-    </div>
-    <a href="#contact" class="btn btn-white">Start for Free →</a>
+    <div><h2>Ready to build your AI advantage?</h2><p>Join 60+ companies already growing with Cortex AI.</p></div>
+    <a href="contact.html" class="btn btn-white">Book Free Consultation →</a>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="#home" class="logo">
-          <div class="logo-mark"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="white" stroke-width="1.5"/><path d="M8 16 L13 11 L18 16 L23 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="21" r="2.5" fill="white"/></svg></div>
-          <span class="logo-text">Cortex<span class="logo-dim">AI</span></span>
-        </a>
-        <p>AI consulting and automation for businesses that want measurable growth. India-based, globally trusted.</p>
-        <div class="footer-socials">
-          <a href="#" title="LinkedIn">in</a>
-          <a href="#" title="X">𝕏</a>
-          <a href="https://github.com" target="_blank" title="GitHub">GH</a>
-        </div>
-        <div class="newsletter-mini">
-          <input type="email" id="footerEmail" placeholder="Weekly AI insights →"/>
-          <button id="footerSubBtn">→</button>
-        </div>
-        <div class="newsletter-msg" id="footerMsg"></div>
-      </div>
-      <div>
-        <h4>Services</h4>
-        <a href="#services">AI Automation</a>
-        <a href="#services">AI Agents</a>
-        <a href="#services">Data Analytics</a>
-        <a href="#services">AI Chatbots</a>
-        <a href="#services">Custom AI Dev</a>
-        <a href="#services">AI Strategy</a>
-      </div>
-      <div>
-        <h4>Company</h4>
-        <a href="#about">About Us</a>
-        <a href="#case-studies">Case Studies</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#">Blog</a>
-        <a href="#">Careers</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <div>
-        <h4>Resources</h4>
-        <a href="#roi">ROI Calculator</a>
-        <a href="#">AI Readiness Quiz</a>
-        <a href="#">Free AI Audit</a>
-        <a href="#">Book on Calendly</a>
-        <a href="#">WhatsApp Chat</a>
-        <a href="#">Privacy Policy</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="year"></span> Cortex AI. All rights reserved.</span>
-      <span>Designed to convert. Built to last.</span>
-    </div>
-  </div>
-</footer>
+<!-- FOOTER PLACEHOLDER -->
+<div id="footer-placeholder"></div>
 
 <!-- CHAT WIDGET -->
-<button class="float-chat" id="floatChat" aria-label="Chat">
+<button class="float-chat" id="floatChat" aria-label="Chat with us">
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
 </button>
 <div class="chat-popup" id="chatPopup">
-  <div class="chat-head"><div><strong>Cortex AI Bot</strong><span>Usually replies instantly</span></div><button id="chatClose">×</button></div>
-  <div class="chat-body" id="chatBody">
-    <div class="chat-msg bot">👋 Hi! How can Cortex AI help grow your business today?</div>
-    <div class="chat-opts">
-      <button class="chat-opt" data-msg="Book a consultation">📅 Book a consultation</button>
-      <button class="chat-opt" data-msg="Tell me about pricing">💰 Pricing info</button>
-      <button class="chat-opt" data-msg="What services do you offer?">🚀 Explore services</button>
+  <div class="chat-head">
+    <div class="chat-head-info">
+      <div class="chat-avatar">C</div>
+      <div><strong>Cortex AI Bot</strong><span class="chat-status"><span class="pulse-dot" style="width:6px;height:6px"></span> Online</span></div>
     </div>
+    <button id="chatClose" aria-label="Close chat">×</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-input-wrap" id="chatInputWrap" style="display:none">
+    <input type="text" id="chatInput" placeholder="Type your message..." maxlength="200"/>
+    <button id="chatSendBtn">→</button>
   </div>
 </div>
 
-<!-- Firebase SDK (CDN) -->
-<script type="module" src="firebase.js"></script>
+<!-- PWA install button -->
+<button class="pwa-install-btn" id="pwaInstall" style="display:none">
+  📲 Install App
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="_nav.js"></script>
 <script src="script.js"></script>
+<script type="module" src="firebase.js"></script>
 </body>
 </html>
