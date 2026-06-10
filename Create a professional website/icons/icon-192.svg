@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="38" fill="#000"/>
+  <text x="96" y="76" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="52" fill="#fff">C</text>
+  <text x="96" y="130" text-anchor="middle" font-family="Arial,sans-serif" font-weight="400" font-size="22" fill="#888">CORTEX AI</text>
+  <circle cx="152" cy="44" r="14" fill="#fff" opacity=".15"/>
+  <circle cx="40" cy="152" r="10" fill="#fff" opacity=".1"/>
+</svg>

@@ -24,20 +24,19 @@
  * ─────────────────────────────────────────────────────────────────
  */
 
-import { initializeApp }    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { initializeApp }    from 'https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js';
 import { getFirestore, collection, addDoc, serverTimestamp }
-                            from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-import { getAnalytics }     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js';
+                            from 'https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js';
+import { getAnalytics }     from 'https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js';
 
-/* ── REPLACE WITH YOUR FIREBASE CONFIG ── */
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID",
-  measurementId:     "YOUR_MEASUREMENT_ID",
+  apiKey:            "AIzaSyBOT2OP173d6WMQmgMtzBrjEsyH2Zqn9hA",
+  authDomain:        "ai-consulting-firm.firebaseapp.com",
+  projectId:         "ai-consulting-firm",
+  storageBucket:     "ai-consulting-firm.firebasestorage.app",
+  messagingSenderId: "615237897346",
+  appId:             "1:615237897346:web:54467479c65efc973f389b",
+  measurementId:     "G-C2LG9CJ590",
 };
 
 const app = initializeApp(firebaseConfig);
