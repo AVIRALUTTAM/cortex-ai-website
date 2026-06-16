@@ -1,0 +1,10 @@
+# Only "Create a professional website/" is tracked in this repo.
+# Ignore everything else in this Documents folder by default.
+/*
+!/Create a professional website/
+!/.gitignore
+
+# Inside the project — ignore local/dev artifacts
+/Create a professional website/.claude/
+/Create a professional website/.firebase/
+/Create a professional website/node_modules/

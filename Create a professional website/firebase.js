@@ -131,6 +131,7 @@ if (contactForm) {
     const data = {
       name:       clean(document.getElementById('fname')?.value || ''),
       email:      clean(document.getElementById('femail')?.value || ''),
+      phone:      clean(document.getElementById('fphone')?.value || ''),
       company:    clean(document.getElementById('fcompany')?.value || ''),
       industry:   clean(document.getElementById('findustry')?.value || ''),
       challenge:  clean(document.getElementById('fchallenge')?.value || ''),

@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "ai-consulting-firm"
+  },
+  "targets": {
+    "ai-consulting-firm": {
+      "hosting": {
+        "cortexai": ["cortex-ai-ed"]
+      }
+    }
+  }
+}
